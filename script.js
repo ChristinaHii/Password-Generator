@@ -88,19 +88,99 @@ var upperCasedCharacters = [
   'Z'
 ];
 
-// Function to prompt user for password options
+////// 1. Function to prompt user for the amount of characters in the user password
 function getPasswordOptions() {
+  let length = parseInt (
+    prompt("How many characters you like to have?")
+  )
+  // if user enter not a number, this will prompt
+  if(isNaN(length) === true){
+  alert('Please enter number between 10 to 64');
+  return;
+  }
+  if(length < 10){
+    alert('Password length must be at least 10 characters');
+    return;
+  }
+  if(length > 64){
+    alert('Password length must be less than 64 characters');
+    return;
+  }
+  //2. Function to prompt user for the type of characters in the user password
+  // Numeric characters
+  let incNumericCharacters = confirm(
+    "Do you want numeric characters?"
+  )
+  // Special characters
+  let incSpecialCharacters = confirm(
+    "Do you want special characters?"
+  )
+  // Lower case characters
+  let incLowerCaseCharacters = confirm(
+    "Do you want lower case characters?"
+  )
+  // Upper case characters
+  let incUpperCaseCharacters = confirm(
+    "Do you want uppper case characters?"
+  )
+  // if user not select any types of characters, this will prompt
+  if(incNumericCharacters === false &&
+  incSpecialCharacters === false &&
+  incLowerCaseCharacters === false &&
+  incUpperCaseCharacters === false){
+  alert('Please choose one type of character.');
+  return;
+  }
 
+  let PasswordOptions = {
+    length: length,
+    incNumericCharacters: incNumericCharacters,
+    incSpecialCharacters: incSpecialCharacters,
+    incLowerCaseCharacters: incLowerCaseCharacters,
+    incUpperCaseCharacters: incUpperCaseCharacters
+  }
+  return PasswordOptions;
 }
 
-// Function for getting a random element from an array
+/// 3. Function for getting a random element from an array
 function getRandom(arr) {
-
+  let random = Math.floor(Math.random()*arr.length)
+  let ranEle = arr[random];
+  return ranEle;
 }
-
 // Function to generate password with user input
 function generatePassword() {
+  let options = getPasswordOptions();
+  console.log(options);
+  let result = []
+  let possibleCharacters = []
+  let guaranteedCharacters = []
 
+  if(options.incNumericCharacters){
+    possibleCharacters = possibleCharacters.concat(numericCharacters);
+    guaranteedCharacters.push(getRandom(numericCharacters))
+  }
+  if(options.incSpecialCharacters){
+    possibleCharacters = possibleCharacters.concat(specialCharacters);
+    guaranteedCharacters.push(getRandom(specialCharacters))
+  }
+  if(options.incLowerCaseCharacters){
+    possibleCharacters = possibleCharacters.concat(lowerCasedCharacters);
+    guaranteedCharacters.push(getRandom(lowerCasedCharacters))
+  }
+  if(options.incUpperCaseCharacters){
+    possibleCharacters = possibleCharacters.concat(upperCasedCharacters);
+    guaranteedCharacters.push(getRandom(upperCasedCharacters))
+  }
+
+  for(let i = 0; i < options.length; i++){
+    var generate = getRandom(possibleCharacters);
+    console.log(generate)
+    result.push(generate);
+  }
+
+  console.log(result);
+  return result.join("")
 }
 
 // Get references to the #generate element
